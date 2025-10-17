@@ -5,19 +5,59 @@
  */
 package br.ulbra.view;
 
-/**
- *
- * @author aluno.saolucas
- */
+import br.ulbra.controller.TreinoController;
+import br.ulbra.model.Treino;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 public class telaTreino extends javax.swing.JFrame {
 
+     private TreinoController controller;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    
     /**
      * Creates new form telaTreino
      */
     public telaTreino() {
-        initComponents();
+          initComponents();
+        controller = new TreinoController();
+        listarTreinos();
     }
 
+    // ====== MÉTODO PARA LISTAR TREINOS ======
+    private void listarTreinos() {
+        try {
+            List<Treino> lista = controller.listar();
+            DefaultTableModel model = (DefaultTableModel) tblTreino.getModel();
+            model.setRowCount(0); // limpa tabela
+
+            for (Treino t : lista) {
+                model.addRow(new Object[]{
+                    t.getIdTreino(),
+                    t.getTipo(),
+                    t.getDuracao(),
+                    t.getCalorias(),
+                    sdf.format(t.getDataTreino())
+                });
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao listar treinos: " + ex.getMessage());
+        }
+    }
+
+    // ====== MÉTODO PARA LIMPAR OS CAMPOS ======
+    private void limparCampos() {
+        txtNomeTreino.setText("");
+        txtTipoTreino.setText("");
+        txtDuracaoTreino.setText("");
+        txtCaloriasTreino.setText("");
+        txtDataTreino.setText("");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,21 +67,207 @@ public class telaTreino extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtNomeTreino = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtTipoTreino = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtDuracaoTreino = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtCaloriasTreino = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtDataTreino = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblTreino = new javax.swing.JTable();
+        btnSalvar = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("Duração:");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel2.setText("CADASTRO DE TREINO");
+
+        txtNomeTreino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNomeTreinoActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setText("Nome:");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setText("Tipo:");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel5.setText("Data de Treino");
+
+        txtCaloriasTreino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCaloriasTreinoActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setText("Calorias:");
+
+        txtDataTreino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDataTreinoActionPerformed(evt);
+            }
+        });
+
+        tblTreino.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Nome", "Tipo", "Duração", "Calorias", "Data de Treino"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblTreino);
+
+        btnSalvar.setText("SALVAR");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(78, 78, 78)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1)
+                            .addComponent(txtNomeTreino)
+                            .addComponent(txtTipoTreino)
+                            .addComponent(txtDuracaoTreino)
+                            .addComponent(txtCaloriasTreino)
+                            .addComponent(txtDataTreino, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSalvar))
+                        .addGap(122, 122, 122))))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(82, 82, 82)
+                    .addComponent(jLabel2)
+                    .addContainerGap(552, Short.MAX_VALUE)))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(128, 128, 128)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtNomeTreino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTipoTreino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDuracaoTreino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSalvar))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel6)
+                .addGap(4, 4, 4)
+                .addComponent(txtCaloriasTreino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtDataTreino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(82, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(40, 40, 40)
+                    .addComponent(jLabel2)
+                    .addContainerGap(445, Short.MAX_VALUE)))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtNomeTreinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeTreinoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNomeTreinoActionPerformed
+
+    private void txtCaloriasTreinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCaloriasTreinoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCaloriasTreinoActionPerformed
+
+    private void txtDataTreinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDataTreinoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDataTreinoActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+  try {
+            Treino t = new Treino();
+            t.setTipo(txtTipoTreino.getText());
+            t.setDuracao(Integer.parseInt(txtDuracaoTreino.getText()));
+            t.setCalorias(Integer.parseInt(txtCaloriasTreino.getText()));
+
+            // Converter data do campo
+            Date data = sdf.parse(txtDataTreino.getText());
+            t.setDataTreino(data);
+
+            // Aqui associamos o treino a um "usuário" com base no nome digitado
+            // (se você tiver a tabela usuario, esse nome pode ser substituído pelo idUsuario)
+            t.setIdUsuario(1); // exemplo fixo — altere conforme o seu sistema
+
+            controller.salvar(t);
+            JOptionPane.showMessageDialog(null, "Treino salvo com sucesso!");
+            listarTreinos();
+            limparCampos();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao salvar treino: " + ex.getMessage());
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +305,20 @@ public class telaTreino extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSalvar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblTreino;
+    private javax.swing.JTextField txtCaloriasTreino;
+    private javax.swing.JTextField txtDataTreino;
+    private javax.swing.JTextField txtDuracaoTreino;
+    private javax.swing.JTextField txtNomeTreino;
+    private javax.swing.JTextField txtTipoTreino;
     // End of variables declaration//GEN-END:variables
 }
