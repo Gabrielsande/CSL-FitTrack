@@ -8,45 +8,39 @@ package br.ulbra.view;
 import br.ulbra.controller.TreinoController;
 import br.ulbra.model.Treino;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class telaTreino extends javax.swing.JFrame {
 
      private TreinoController controller;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
     
     /**
      * Creates new form telaTreino
      */
-    public telaTreino() {
+    public telaTreino() throws SQLException {
           initComponents();
         controller = new TreinoController();
         listarTreinos();
     }
 
     // ====== MÉTODO PARA LISTAR TREINOS ======
-    private void listarTreinos() {
-        try {
-            List<Treino> lista = controller.listar();
-            DefaultTableModel model = (DefaultTableModel) tblTreino.getModel();
-            model.setRowCount(0); // limpa tabela
-
-            for (Treino t : lista) {
-                model.addRow(new Object[]{
-                    t.getIdTreino(),
-                    t.getTipo(),
-                    t.getDuracao(),
-                    t.getCalorias(),
-                    sdf.format(t.getDataTreino())
-                });
-            }
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao listar treinos: " + ex.getMessage());
+    private void listarTreinos() throws SQLException {
+        List<Treino> lista = controller.listar();
+        DefaultTableModel model = (DefaultTableModel) tblTreino.getModel();
+        model.setRowCount(0); // limpa tabela
+        for (Treino t : lista) {
+            model.addRow(new Object[]{
+                t.getIdTreino(),
+                t.getTipo(),
+                t.getDuracao(),
+                t.getCalorias(),
+                t.getDataTreino()
+            });
         }
     }
 
@@ -133,7 +127,7 @@ public class telaTreino extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -253,8 +247,7 @@ public class telaTreino extends javax.swing.JFrame {
             t.setCalorias(Integer.parseInt(txtCaloriasTreino.getText()));
 
             // Converter data do campo
-            Date data = sdf.parse(txtDataTreino.getText());
-            t.setDataTreino(data);
+   
 
             // Aqui associamos o treino a um "usuário" com base no nome digitado
             // (se você tiver a tabela usuario, esse nome pode ser substituído pelo idUsuario)
@@ -299,7 +292,11 @@ public class telaTreino extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new telaTreino().setVisible(true);
+                try {
+                    new telaTreino().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(telaTreino.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
