@@ -52,7 +52,7 @@ FitTrack
 - Scrum Master: Gabriel Bandasz
 - Product Owner (PO): Gabriel Sandes
 - Desenvolvedores (DEVs):
--- Pedro Flores
--- Lucas Matheus
--- Joaquim Guedes
--- Leonardo Schimmit
+- Pedro Flores
+- Lucas Matheus
+- Joaquim Guedes
+- Leonardo Schimmit
