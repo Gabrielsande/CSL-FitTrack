@@ -37,7 +37,7 @@ Este projeto é um sistema de gerenciamento de usuários e treinos desenvolvido 
 ```
 FitTrack
 ├── src/
-│   └── br/ulbra/controller/          # DAO para manipulação do banco
+│   └── br/ulbra/controller/         
 │   ├── br/ulbra/model/        # Classes modelo (Usuário, Treino)
 │   ├── br/ulbra/view/         # Telas (Login, Cadastro, Menu)
 │   └── br/ulbra/dao/          # DAO para manipulação do banco
