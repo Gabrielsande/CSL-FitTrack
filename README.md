@@ -47,7 +47,7 @@ FitTrack
 
 ---
 
-## 👨‍💻 Autor
+## 👨‍💻 Autores
 
 - Scrum Master: Gabriel Bandasz
 - Product Owner (PO): Gabriel Sandes
