@@ -34,7 +34,8 @@ Este projeto é um sistema de gerenciamento de usuários e treinos desenvolvido 
 ---
 
 ## 📁 Estrutura do ProjetoFitTrack/
-
+```
+FitTrack
 ├── src/
 │   └── br/ulbra/controller/          # DAO para manipulação do banco
 │   ├── br/ulbra/model/        # Classes modelo (Usuário, Treino)
@@ -42,7 +43,7 @@ Este projeto é um sistema de gerenciamento de usuários e treinos desenvolvido 
 │   └── br/ulbra/dao/          # DAO para manipulação do banco
 │   └── br/ulbra/view/          # DAO para manipulação do banco
 ├── lib/                       # Bibliotecas externas (se houver)
-
+```
 
 ---
 
@@ -51,7 +52,7 @@ Este projeto é um sistema de gerenciamento de usuários e treinos desenvolvido 
 - Scrum Master: Gabriel Bandasz
 - Product Owner (PO): Gabriel Sandes
 - Desenvolvedores (DEVs):
- -- Pedro Flores
- -- Lucas Matheus
- -- Joaquim Guedes
- -- Leonardo Schimmit
+-- Pedro Flores
+-- Lucas Matheus
+-- Joaquim Guedes
+-- Leonardo Schimmit
