@@ -107,16 +107,18 @@ O projeto foi desenvolvido utilizando a **metodologia ágil Scrum**, com sprints
 
 ---
 
+## Mockup 
+<img width="1280" height="800" alt="1" src="https://github.com/user-attachments/assets/91cd5f12-005d-42cc-aacf-4b470c317962" />
+<img width="1280" height="800" alt="2" src="https://github.com/user-attachments/assets/974d9414-290d-4ce8-b5be-7a0d6a924c13" />
+
+---
+
 ## 🏫 Contexto Acadêmico
 
 Este projeto foi desenvolvido como parte do **Curso Técnico em Informática** do  
 **Colégio São Lucas**, com o objetivo de aplicar conceitos de **Programação Orientada a Objetos**, **Banco de Dados** e **Desenvolvimento de Interfaces Gráficas**.
 
 ---
-## Mockup 
-<img width="1280" height="800" alt="1" src="https://github.com/user-attachments/assets/91cd5f12-005d-42cc-aacf-4b470c317962" />
-<img width="1280" height="800" alt="2" src="https://github.com/user-attachments/assets/974d9414-290d-4ce8-b5be-7a0d6a924c13" />
-
 
 
 ## 👨‍💻 Autores
