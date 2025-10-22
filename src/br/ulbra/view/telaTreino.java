@@ -6,6 +6,7 @@
 package br.ulbra.view;
 
 import br.ulbra.Controller.TreinoController;
+import br.ulbra.dao.UsuarioDAO;
 import br.ulbra.model.Treino;
 import br.ulbra.model.Usuario;
 import java.sql.SQLException;
@@ -16,30 +17,81 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class telaTreino extends javax.swing.JFrame {
- private Usuario usuarioLogado;        // usuário logado
+    
+    private Usuario usuarioLogado;        // usuário logado
     private TreinoController controller;  // controller de treinos
-
-    // ===== CONSTRUTOR PADRÃO =====
+    private int treinoSelecionadoId = -1; // -1 = novo treino, outro valor = edição
+    
+// ===== CONSTRUTOR PADRÃO =====
     public telaTreino() throws SQLException {
         initComponents();
+
+        // inicializa controller
         controller = new TreinoController();
+
+        // registra listener uma vez aqui (fora do handler)
+        tblTreino.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTreinoMouseClicked(evt);
+            }
+        });
+
         listarTreinos();
         setLocationRelativeTo(null); // centraliza a tela
     }
 
+    // ===== EVENTO DE CLIQUE NA TABELA =====
+    private void tblTreinoMouseClicked(java.awt.event.MouseEvent evt) {
+        int linha = tblTreino.getSelectedRow();
+        System.out.println("Clique detectado na linha: " + linha); // debug temporário — pode remover depois
+        if (linha != -1) {
+            try {
+                // Ajuste os índices se a ordem das colunas for diferente
+                treinoSelecionadoId = Integer.parseInt(tblTreino.getValueAt(linha, 0).toString());
+                String tipo = tblTreino.getValueAt(linha, 1).toString();
+                String duracao = tblTreino.getValueAt(linha, 2).toString();
+                String calorias = tblTreino.getValueAt(linha, 3).toString();
+                String dataTreino = tblTreino.getValueAt(linha, 4).toString();
+
+                // Exibe nos campos
+                txtTipoTreino.setText(tipo);
+                txtDuracaoTreino.setText(duracao);
+                txtCaloriasTreino.setText(calorias);
+                txtDataTreino.setText(dataTreino);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Erro ao carregar dados da tabela: " + e.getMessage());
+            }
+        }
+    }
+
+    
+    
+    
     // ===== CONSTRUTOR COM USUÁRIO LOGADO =====
     public telaTreino(Usuario u) throws SQLException {
-        initComponents();
+  initComponents();
         this.usuarioLogado = u;      // armazena o usuário logado
+
+        // inicializa controller
         controller = new TreinoController();
+
+        // registra listener uma vez aqui também
+        tblTreino.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTreinoMouseClicked(evt);
+            }
+        });
+
         listarTreinos();
-        setLocationRelativeTo(null); // centraliza a tela
+        setLocationRelativeTo(null); // centraliza a tela    
     }
 
     // ===== MÉTODO PARA LISTAR TODOS OS TREINOS =====
     private void listarTreinos() throws SQLException {
-        List<Treino> lista;
-        
+  List<Treino> lista;
+
         // se tiver usuário logado, lista só os treinos dele
         if (usuarioLogado != null) {
             lista = controller.listarPorUsuario(usuarioLogado.getId());
@@ -58,7 +110,7 @@ public class telaTreino extends javax.swing.JFrame {
                 t.getDataTreino()
             });
         }
-    }
+ }
 
     // ===== MÉTODO PARA LIMPAR OS CAMPOS =====
     private void limparCampos() {
@@ -66,6 +118,7 @@ public class telaTreino extends javax.swing.JFrame {
         txtDuracaoTreino.setText("");
         txtCaloriasTreino.setText("");
         txtDataTreino.setText("");
+        treinoSelecionadoId = -1; // reset
     }
 
     /**
@@ -94,6 +147,7 @@ public class telaTreino extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        btnEditar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -182,6 +236,13 @@ public class telaTreino extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
         jLabel9.setText("ADICIONE OS SEUS DADOS DE TREINO:");
 
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -195,7 +256,9 @@ public class telaTreino extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnExcluir)
                         .addGap(18, 18, 18)
-                        .addComponent(btnVoltar))
+                        .addComponent(btnVoltar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEditar))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 703, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -246,7 +309,8 @@ public class telaTreino extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
                     .addComponent(btnExcluir)
-                    .addComponent(btnVoltar))
+                    .addComponent(btnVoltar)
+                    .addComponent(btnEditar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
@@ -258,7 +322,7 @@ public class telaTreino extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("CADASTRO DE TREINO");
 
-        jLabel11.setIcon(new javax.swing.ImageIcon("C:\\Users\\gabri\\Downloads\\LogoFitTrackBranco2.png")); // NOI18N
+        jLabel11.setIcon(new javax.swing.ImageIcon("C:\\Users\\gabri\\Documents\\NetBeansProjects\\FitTrack\\src\\br.ulbra.img\\LogoFitTrackBranco2.png")); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -314,76 +378,81 @@ public class telaTreino extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDataTreinoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-   try {
-        if (usuarioLogado == null) {
-            JOptionPane.showMessageDialog(this, "Nenhum usuário logado!");
-            return;
+ try {
+            if (usuarioLogado == null) {
+                JOptionPane.showMessageDialog(this, "Nenhum usuário logado!");
+                return;
+            }
+
+            // Validação de campos
+            if (txtTipoTreino.getText().trim().isEmpty() ||
+                txtDuracaoTreino.getText().trim().isEmpty() ||
+                txtCaloriasTreino.getText().trim().isEmpty() ||
+                txtDataTreino.getText().trim().isEmpty()) {
+
+                JOptionPane.showMessageDialog(this, "Preencha todos os campos antes de salvar!");
+                return;
+            }
+
+            Treino t = new Treino();
+            t.setTipo(txtTipoTreino.getText());
+            t.setDuracao(Integer.parseInt(txtDuracaoTreino.getText()));
+            t.setCalorias(Double.parseDouble(txtCaloriasTreino.getText()));
+            t.setDataTreino(txtDataTreino.getText());
+            t.setIdUsuario(usuarioLogado.getId());
+
+            if (treinoSelecionadoId != -1) {
+                // Atualiza treino existente
+                t.setIdTreino(treinoSelecionadoId);
+                controller.atualizar(t);
+                JOptionPane.showMessageDialog(null, "Treino atualizado com sucesso!");
+                treinoSelecionadoId = -1;
+            } else {
+                // Novo treino
+                controller.salvar(t);
+                JOptionPane.showMessageDialog(null, "Treino salvo com sucesso!");
+            }
+
+            listarTreinos();
+            limparCampos();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Verifique se duração e calorias são números válidos!");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao salvar treino: " + ex.getMessage());
         }
-
-        Treino t = new Treino();
-        t.setTipo(txtTipoTreino.getText());
-        t.setDuracao(Integer.parseInt(txtDuracaoTreino.getText()));
-        t.setCalorias(Integer.parseInt(txtCaloriasTreino.getText()));
-        t.setDataTreino(txtDataTreino.getText());
-
-        // ⚡ Associar o treino ao usuário logado
-        t.setIdUsuario(usuarioLogado.getId());
-
-        controller.salvar(t);
-        JOptionPane.showMessageDialog(null, "Treino salvo com sucesso!");
-        listarTreinos();
-        limparCampos();
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(null, "Erro ao salvar treino: " + ex.getMessage());
-    }
-
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private static final int COL_TREINO_OBJ = 0; // ajuste conforme seu layout
 
     
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-    int linha = tblTreino.getSelectedRow();
-    if (linha == -1) {
-        JOptionPane.showMessageDialog(this, "Selecione um treino para excluir!");
-        return;
-    }
-
-    int confirm = JOptionPane.showConfirmDialog(this,
-        "Deseja realmente excluir este treino?",
-        "Confirmar exclusão",
-        JOptionPane.YES_NO_OPTION);
-    if (confirm != JOptionPane.YES_OPTION) return;
-
-    try {
-        // Opção segura: obter o Treino da linha
-        Object obj = tblTreino.getValueAt(linha, COL_TREINO_OBJ);
-        Treino t;
-        if (obj instanceof Treino) {
-            t = (Treino) obj;
-        } else {
-            // fallback: tentar buscar pelo ID na linha (colocar COL_ID como índice)
-            Object idObj = tblTreino.getValueAt(linha, 0); // ajuste conforme sua tabela
-            int id = Integer.parseInt(idObj.toString().trim());
-            TreinoController controller = new TreinoController();
-            controller.removerPorId(id);
-            JOptionPane.showMessageDialog(this, "Treino excluído com sucesso!");
-            listarTreinos();
+int linha = tblTreino.getSelectedRow();
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione um treino para excluir!");
             return;
         }
 
-        TreinoController controller = new TreinoController();
-        controller.removerPorId(t.getIdTreino());
+        int confirm = JOptionPane.showConfirmDialog(this,
+            "Deseja realmente excluir este treino?",
+            "Confirmar exclusão",
+            JOptionPane.YES_NO_OPTION);
+        if (confirm != JOptionPane.YES_OPTION) return;
 
-        JOptionPane.showMessageDialog(this, "Treino excluído com sucesso!");
-        listarTreinos();
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(this, "Erro ao excluir treino: " + ex.getMessage());
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "ID inválido na linha selecionada.");
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
-    }
+        try {
+            // fallback: tentar buscar pelo ID na linha
+            Object idObj = tblTreino.getValueAt(linha, 0); // índice da coluna ID
+            int id = Integer.parseInt(idObj.toString().trim());
+            controller.removerPorId(id);
+            JOptionPane.showMessageDialog(this, "Treino excluído com sucesso!");
+            listarTreinos();
+            limparCampos();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao excluir treino: " + ex.getMessage());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "ID inválido na linha selecionada.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
+        }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
@@ -394,6 +463,45 @@ public class telaTreino extends javax.swing.JFrame {
     private void txtDuracaoTreinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDuracaoTreinoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDuracaoTreinoActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+   if (treinoSelecionadoId == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione um treino na tabela para editar!");
+            return;
+        }
+
+        // Validação de campos obrigatórios
+        if (txtTipoTreino.getText().trim().isEmpty() ||
+            txtDuracaoTreino.getText().trim().isEmpty() ||
+            txtCaloriasTreino.getText().trim().isEmpty() ||
+            txtDataTreino.getText().trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos antes de salvar!");
+            return;
+        }
+
+        try {
+            Treino t = new Treino();
+            t.setIdTreino(treinoSelecionadoId);
+            t.setTipo(txtTipoTreino.getText());
+            t.setDuracao(Integer.parseInt(txtDuracaoTreino.getText()));
+            t.setCalorias(Double.parseDouble(txtCaloriasTreino.getText()));
+            t.setDataTreino(txtDataTreino.getText());
+            t.setIdUsuario(usuarioLogado.getId());
+
+            controller.atualizar(t);
+
+            JOptionPane.showMessageDialog(this, "Treino atualizado com sucesso!");
+            listarTreinos();
+            limparCampos();
+            treinoSelecionadoId = -1;
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Verifique se duração e calorias são números válidos!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao editar treino: " + e.getMessage());
+            }
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -435,13 +543,12 @@ public class telaTreino extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnVoltar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -451,7 +558,6 @@ public class telaTreino extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblTreino;
     private javax.swing.JTextField txtCaloriasTreino;

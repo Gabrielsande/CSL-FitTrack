@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package br.ulbra.view;
-
 import br.ulbra.Controller.TreinoController;
 import br.ulbra.dao.UsuarioDAO;
 import br.ulbra.model.Treino;
@@ -222,7 +221,7 @@ private void listarTreinosUsuario() {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("PERFIL");
 
-        jLabel9.setIcon(new javax.swing.ImageIcon("C:\\Users\\gabri\\Downloads\\LogoFitTrackBranco2.png")); // NOI18N
+        jLabel9.setIcon(new javax.swing.ImageIcon("C:\\Users\\gabri\\Documents\\NetBeansProjects\\FitTrack\\src\\br.ulbra.img\\LogoFitTrackBranco2.png")); // NOI18N
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -270,19 +269,18 @@ private void listarTreinosUsuario() {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtAltura, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtNome))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel3))
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtIdade, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
-                                .addComponent(txtPeso)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtNome))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtIdade, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+                            .addComponent(txtPeso))))
                 .addContainerGap(181, Short.MAX_VALUE))
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -323,8 +321,9 @@ private void listarTreinosUsuario() {
 
     private void btnImcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImcActionPerformed
           try {
-            double peso = Double.parseDouble(txtPeso.getText());
-            double altura = Double.parseDouble(txtAltura.getText());
+        // ALTERAÇÃO PARA VIRGULA: aceita 1,75 ou 1.75
+        double peso = Double.parseDouble(txtPeso.getText().replace(',', '.'));
+        double altura = Double.parseDouble(txtAltura.getText().replace(',', '.'));
 
             if (altura <= 0) {
                 txtImc.setText("Altura inválida");
@@ -384,12 +383,13 @@ private void listarTreinosUsuario() {
             txtAltura.setEditable(true);
             btnEditar.setText("Salvar");
         } else {
+        
             try {
                 usuarioLogado.setNome(txtNome.getText());
                 usuarioLogado.setIdade(Integer.parseInt(txtIdade.getText()));
-                usuarioLogado.setPeso(Double.parseDouble(txtPeso.getText()));
-                usuarioLogado.setAltura(Double.parseDouble(txtAltura.getText()));
-
+ // ALTERAÇÃO PARA VIRGULA: aceita 1,75 ou 1.75
+            usuarioLogado.setPeso(Double.parseDouble(txtPeso.getText().replace(',', '.')));       
+            usuarioLogado.setAltura(Double.parseDouble(txtAltura.getText().replace(',', '.')));   
                 UsuarioDAO dao = new UsuarioDAO();
                 dao.atualizar(usuarioLogado); // atualiza corretamente pelo ID
 
