@@ -108,10 +108,38 @@ O projeto foi desenvolvido utilizando a **metodologia ágil Scrum**, com sprints
 ---
 
 ## Mockup 
-<img width="1280" height="800" alt="1" src="https://github.com/user-attachments/assets/91cd5f12-005d-42cc-aacf-4b470c317962" />
-<img width="1280" height="800" alt="2" src="https://github.com/user-attachments/assets/974d9414-290d-4ce8-b5be-7a0d6a924c13" />
+<img width="1280" height="800" alt="1" src="https://github.com/user-attachments/assets/b3ce7101-01df-446c-8293-0399dd567aa7" />
+<img width="1280" height="800" alt="2" src="https://github.com/user-attachments/assets/76314818-95b8-4c0f-a9de-1f68090d04fa" />
+<img width="1280" height="800" alt="3" src="https://github.com/user-attachments/assets/44318cdb-efc1-4444-b3bc-a0f51a9a9c92" />
+<img width="1280" height="800" alt="4" src="https://github.com/user-attachments/assets/7795d9c0-131e-428a-9150-949e11461b40" />
+<img width="1280" height="800" alt="5" src="https://github.com/user-attachments/assets/aba6c268-4066-4297-9f8a-fe6e7730b9f4" />
 
 ---
+
+## 🗄️ Banco de Dados
+
+O **FitTrack** utiliza o **MySQL/MariaDB** para armazenar os dados de usuários e treinos. O banco de dados é chamado `academia` e possui duas tabelas principais: `usuario` e `treino`.
+
+### Tabela `usuario`
+- **id_usuario**: INT PK AUTO_INCREMENT – Identificador único do usuário  
+- **nome**: VARCHAR(80) NOT NULL – Nome completo do usuário  
+- **idade**: INT – Idade do usuário  
+- **peso**: DECIMAL(5,2) – Peso do usuário em kg  
+- **altura**: DECIMAL(4,2) – Altura do usuário em metros  
+- **senha**: VARCHAR(200) NOT NULL – Senha de acesso (idealmente criptografada)  
+
+### Tabela `treino`
+- **id_treino**: INT PK AUTO_INCREMENT – Identificador único do treino  
+- **tipo**: VARCHAR(50) – Tipo de treino (Perna, Ombro, etc.)  
+- **duracao**: INT – Duração do treino em minutos  
+- **calorias**: INT – Calorias queimadas  
+- **data_treino**: VARCHAR(15) – Data em que o treino foi realizado  
+- **id_usuario**: INT FK – Referência ao usuário que realizou o treino  
+
+### Relacionamentos
+- Um **usuário** pode ter **múltiplos treinos** (relação 1:N entre `usuario` e `treino`).  
+- A tabela `treino` possui uma **chave estrangeira** (`id_usuario`) que referencia `usuario.id_usuario`.  
+
 
 ## 🏫 Contexto Acadêmico
 
