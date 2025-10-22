@@ -116,31 +116,35 @@ O projeto foi desenvolvido utilizando a **metodologia ágil Scrum**, com sprints
 
 ---
 
-## 🗄️ Banco de Dados
+## 🗄️ Banco de dados
 
 O **FitTrack** utiliza o **MySQL/MariaDB** para armazenar os dados de usuários e treinos. O banco de dados é chamado `academia` e possui duas tabelas principais: `usuario` e `treino`.
 
-### Tabela `usuario`
-- **id_usuario**: INT PK AUTO_INCREMENT – Identificador único do usuário  
-- **nome**: VARCHAR(80) NOT NULL – Nome completo do usuário  
-- **idade**: INT – Idade do usuário  
-- **peso**: DECIMAL(5,2) – Peso do usuário em kg  
-- **altura**: DECIMAL(4,2) – Altura do usuário em metros  
-- **senha**: VARCHAR(200) NOT NULL – Senha de acesso (idealmente criptografada)  
+### Criação do schema e tabelas
 
-### Tabela `treino`
-- **id_treino**: INT PK AUTO_INCREMENT – Identificador único do treino  
-- **tipo**: VARCHAR(50) – Tipo de treino (Perna, Ombro, etc.)  
-- **duracao**: INT – Duração do treino em minutos  
-- **calorias**: INT – Calorias queimadas  
-- **data_treino**: VARCHAR(15) – Data em que o treino foi realizado  
-- **id_usuario**: INT FK – Referência ao usuário que realizou o treino  
+```sql
+CREATE DATABASE IF NOT EXISTS academia;
+USE academia;
 
-### Relacionamentos
-- Um **usuário** pode ter **múltiplos treinos** (relação 1:N entre `usuario` e `treino`).  
-- A tabela `treino` possui uma **chave estrangeira** (`id_usuario`) que referencia `usuario.id_usuario`.  
+CREATE TABLE usuario (
+  id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(80) NOT NULL,
+  idade INT,
+  peso DECIMAL(5,2),
+  altura DECIMAL(4,2),
+  senha VARCHAR(200) NOT NULL
+);
 
-
+CREATE TABLE treino (
+  id_treino INT AUTO_INCREMENT PRIMARY KEY,
+  tipo VARCHAR(50),
+  duracao INT,
+  calorias INT,
+  data_treino VARCHAR(15),
+  id_usuario INT,
+  FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+);
+```
 ## 🏫 Contexto Acadêmico
 
 Este projeto foi desenvolvido como parte do **Curso Técnico em Informática** do  
